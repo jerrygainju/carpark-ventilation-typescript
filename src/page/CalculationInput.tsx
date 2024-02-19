@@ -439,7 +439,7 @@ const CalculationTable = () => {
                     </tr>
                     <tr>
                         <td className="border p-2">
-                            Parking usage factor (Table 4.1)
+                            Parking usage factor (Table A)
                         </td>
                         <td className="border pl-16">
                             p
@@ -647,7 +647,7 @@ const CalculationTable = () => {
                     </tr>
                     <tr>
                         <td className="border p-2">
-                            The Staff Exposure Factor (Table-4.3)
+                            The Staff Exposure Factor (Table C)
                         </td>
                         <td className="border pl-16">
                             E
@@ -735,7 +735,7 @@ const CalculationTable = () => {
                     </tr>
                     <tr>
                         <td className="border p-2">
-                            The Vehicle Type Factor (Table 4.2)
+                            The Vehicle Type Factor (Table B)
                         </td>
                         <td className="border pl-16">
                             T
@@ -848,7 +848,7 @@ const CalculationTable = () => {
                     </tr>
                     <tr>
                         <td className="border p-2">
-                            The Staff Usage Factor (Table -4.3)
+                            The Staff Usage Factor (Table C)
                         </td>
                         <td className="border pl-16">
                             F

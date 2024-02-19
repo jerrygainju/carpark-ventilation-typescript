@@ -2,7 +2,7 @@ const Table = () => {
   return (
     <>
       <div className="text-sm text-center pt-4 font-bold">
-        Table and variables
+        Table and variable
       </div>
       <div className="content-center">
         <table className="border border-collapse mt-4 text-sm w-5/12 mx-auto">
@@ -28,7 +28,7 @@ const Table = () => {
               <td className="border pl-10">n2</td>
             </tr>
             <tr>
-              <td className="border p-2">Parking usage factor (Table 4.1)</td>
+              <td className="border p-2">Parking usage factor (Table A)</td>
               <td className="border pl-10">p</td>
             </tr>
             <tr>
@@ -47,15 +47,15 @@ const Table = () => {
               <td className="border pl-10">d2</td>
             </tr>
             <tr>
-              <td className="border p-2">The Staff Exposure Factor (Table-4.3)</td>
+              <td className="border p-2">The Staff Exposure Factor (Table C)</td>
               <td className="border pl-10">E</td>
             </tr>
             <tr>
-              <td className="border p-2">The Vehicle Type Factor (Table 4.2)</td>
+              <td className="border p-2">The Vehicle Type Factor (Table B)</td>
               <td className="border pl-10">T</td>
             </tr>
             <tr>
-              <td className="border p-2">The Staff Usage Factor (Table -4.3)</td>
+              <td className="border p-2">The Staff Usage Factor (Table C)</td>
               <td className="border pl-10">F</td>
             </tr>
             <tr>

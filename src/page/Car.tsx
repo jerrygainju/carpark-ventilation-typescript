@@ -16,7 +16,7 @@ const Car = () => {
   return (
     <div className="bg-slate-50 pl-10 pb-20">
       <div className="flex flex-row gap-14 text-3xl content-center text-center font-bold mt-10">
-        Car Park Neutral Ventilation
+        Car Park Ventilation
         <div>
           <button className="text-sm border rounded p-2 bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800" onClick={scrollHandler}>
             Click for Calculation
