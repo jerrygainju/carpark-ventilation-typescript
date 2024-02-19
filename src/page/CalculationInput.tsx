@@ -274,7 +274,7 @@ const CalculationTable = () => {
     };
 
     const calculateTotalAirSupply = () => {
-        const { greatestValueSum, validColumns } = calculateCombinedGreatestValue();
+        const { greatestValueSum} = calculateCombinedGreatestValue();
         const Ex = parseFloat(percentValue) / 100; // Parse as float and convert to decimal
         const totalAirSupply = Ex * greatestValueSum;
         setCalculateTotalAirSupply(totalAirSupply);
@@ -449,7 +449,7 @@ const CalculationTable = () => {
                                 options={parkingOptions}
                                 placeholder="Enter value p(z)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 260 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -471,7 +471,7 @@ const CalculationTable = () => {
                                 options={parkingOptions}
                                 placeholder="Enter value p(a)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -491,7 +491,7 @@ const CalculationTable = () => {
                                 options={parkingOptions}
                                 placeholder="Enter value p(b)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -511,7 +511,7 @@ const CalculationTable = () => {
                                 options={parkingOptions}
                                 placeholder="Enter value p(c)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -531,7 +531,7 @@ const CalculationTable = () => {
                                 options={parkingOptions}
                                 placeholder="Enter value p(d)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -657,7 +657,7 @@ const CalculationTable = () => {
                                 options={exposureOptions}
                                 placeholder="Enter value E(z)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -673,7 +673,7 @@ const CalculationTable = () => {
                                 options={exposureOptions}
                                 placeholder="Enter value E(a)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -689,7 +689,7 @@ const CalculationTable = () => {
                                 options={exposureOptions}
                                 placeholder="Enter value E(b)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -705,7 +705,7 @@ const CalculationTable = () => {
                                 options={exposureOptions}
                                 placeholder="Enter value E(c)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -721,7 +721,7 @@ const CalculationTable = () => {
                                 options={exposureOptions}
                                 placeholder="Enter value E(d)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -745,7 +745,7 @@ const CalculationTable = () => {
                                 options={vehicleOptions}
                                 placeholder="Enter value T(z)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -766,7 +766,7 @@ const CalculationTable = () => {
                                 options={vehicleOptions}
                                 placeholder="Enter value T(a)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -787,7 +787,7 @@ const CalculationTable = () => {
                                 options={vehicleOptions}
                                 placeholder="Enter value T(b)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -808,7 +808,7 @@ const CalculationTable = () => {
                                 options={vehicleOptions}
                                 placeholder="Enter value T(c)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -829,7 +829,7 @@ const CalculationTable = () => {
                                 options={vehicleOptions}
                                 placeholder="Enter value T(d)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -858,7 +858,7 @@ const CalculationTable = () => {
                                 options={factorOptions}
                                 placeholder="Enter value F(z)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -879,7 +879,7 @@ const CalculationTable = () => {
                                 options={factorOptions}
                                 placeholder="Enter value F(a)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -900,7 +900,7 @@ const CalculationTable = () => {
                                 options={factorOptions}
                                 placeholder="Enter value F(b)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -921,7 +921,7 @@ const CalculationTable = () => {
                                 options={factorOptions}
                                 placeholder="Enter value F(c)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -942,7 +942,7 @@ const CalculationTable = () => {
                                 options={factorOptions}
                                 placeholder="Enter value F(d)"
                                 styles={{
-                                    control: (provided, state) => ({
+                                    control: (provided) => ({
                                         ...provided,
                                         backgroundColor: ' rgb(248 250 252 / var(--tw-bg-opacity))',
                                         borderColor: 'transparent',
@@ -1099,7 +1099,7 @@ const CalculationTable = () => {
                             options={percentOptions}
                             placeholder="Enter the percentage"
                             styles={{
-                                control: (provided, state) => ({
+                                control: (provided) => ({
                                     ...provided,
                                     backgroundColor: ' rgb(248 250 260 / var(--tw-bg-opacity))',
                                     alignContent: 'center',
