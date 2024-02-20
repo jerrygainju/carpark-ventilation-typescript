@@ -275,7 +275,7 @@ const CalculationTable = () => {
 
     const calculateTotalAirSupply = () => {
         const { greatestValueSum} = calculateCombinedGreatestValue();
-        const Ex = parseFloat(percentValue) / 100; // Parse as float and convert to decimal
+        const Ex = parseFloat(percentValue); // Parse as float and convert to decimal
         const totalAirSupply = Ex * greatestValueSum;
         setCalculateTotalAirSupply(totalAirSupply);
     };
