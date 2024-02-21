@@ -106,7 +106,7 @@ const CalculationTable = () => {
     const [calculatedValueC1c, setCalculatedValueC1c] = useState('');
     const [calculatedValueC1d, setCalculatedValueC1d] = useState('');
 
-    const [calculateAirSupply, setCalculateTotalAirSupply] = useState<number>(0);
+    const [calculateAirSupply, setCalculateTotalAirSupply] = useState<number | null>(null);
 
     const parkingOptions = generateParkingOptions();
     const vehicleOptions = generateVehicleTypeFactor();
@@ -119,52 +119,34 @@ const CalculationTable = () => {
         return element ? parseFloat(element.value) : 0;
     };
 
-    const calculateValues = () => {
-        const Pz = parseFloat(inputValuePz);
-        const Pa = parseFloat(inputValuePa);
-        const Pb = parseFloat(inputValuePb);
-        const Pc = parseFloat(inputValuePc);
-        const Pd = parseFloat(inputValuePd);
+    const calculateValues = (): Record<string, number> => {
+        const inputKeys: string[] = ['z', 'a', 'b', 'c', 'd'];
+        const stateSetters: Record<string, React.Dispatch<React.SetStateAction<string>>> = {
+            'z': setCalculatedValue,
+            'a': setCalculatedValueCa,
+            'b': setCalculatedValueCb,
+            'c': setCalculatedValueCc,
+            'd': setCalculatedValueCd,
+        };
 
+        const results: number[] = inputKeys.map(suffix => {
+            const P = parseFloat((eval(`inputValueP${suffix}`) as string));
+            const n1 = getElementValue(`n1${suffix}`);
+            const d1 = getElementValue(`d1${suffix}`);
+            const n2 = getElementValue(`n2${suffix}`);
+            const d2 = getElementValue(`d2${suffix}`);
 
-        const n1z = getElementValue('n1z');
-        const n1a = getElementValue('n1a');
-        const n1b = getElementValue('n1b');
-        const n1c = getElementValue('n1c');
-        const n1d = getElementValue('n1d');
+            const result = P * (100 * n1 + n1 * d1 + n2 * d2);
+            stateSetters[suffix](result.toFixed(2));
+            return result;
+        });
 
-        const d1z = getElementValue('d1z');
-        const d1a = getElementValue('d1a');
-        const d1b = getElementValue('d1b');
-        const d1c = getElementValue('d1c');
-        const d1d = getElementValue('d1d');
-
-        const n2z = getElementValue('n2z');
-        const n2a = getElementValue('n2a');
-        const n2b = getElementValue('n2b');
-        const n2c = getElementValue('n2d');
-        const n2d = getElementValue('n2a');
-
-        const d2z = getElementValue('d2z');
-        const d2a = getElementValue('d2a');
-        const d2b = getElementValue('d2b');
-        const d2c = getElementValue('d2c');
-        const d2d = getElementValue('d2d');
-
-        const resultCz = Pz * (100 * n1z + n1z * d1z + n2z * d2z);
-        const resultCa = Pa * (100 * n1a + n1a * d1a + n2a * d2a);
-        const resultCb = Pb * (100 * n1b + n1b * d1b + n2b * d2b);
-        const resultCc = Pc * (100 * n1c + n1c * d1c + n2c * d2c);
-        const resultCd = Pd * (100 * n1d + n1d * d1d + n2d * d2d);
-
-        setCalculatedValue(resultCz.toFixed(2));
-        setCalculatedValueCa(resultCa.toFixed(2));
-        setCalculatedValueCb(resultCb.toFixed(2));
-        setCalculatedValueCc(resultCc.toFixed(2));
-        setCalculatedValueCd(resultCd.toFixed(2));
-
-        return { resultCa, resultCz, resultCb, resultCc, resultCd }
+        return inputKeys.reduce((acc, suffix, index) => {
+            acc[`resultC${suffix}`] = results[index];
+            return acc;
+        }, {} as Record<string, number>);
     };
+
 
     const calculateAValues = () => {
         const { resultCz, resultCa, resultCb, resultCc, resultCd } = calculateValues()
@@ -197,32 +179,28 @@ const CalculationTable = () => {
     }
 
     const calculateBValues = () => {
-        const Fz = parseFloat(inputFactorFz)
-        const Fa = parseFloat(inputFactorFa)
-        const Fb = parseFloat(inputFactorFb)
-        const Fc = parseFloat(inputFactorFc)
-        const Fd = parseFloat(inputFactorFd)
-        const Tz = parseFloat(inputVTypeTz)
-        const Ta = parseFloat(inputVTypeTa)
-        const Tb = parseFloat(inputVTypeTb)
-        const Tc = parseFloat(inputVTypeTc)
-        const Td = parseFloat(inputVTypeTd)
+        const factorInputs = [inputFactorFz, inputFactorFa, inputFactorFb, inputFactorFc, inputFactorFd];
+        const typeInputs = [inputVTypeTz, inputVTypeTa, inputVTypeTb, inputVTypeTc, inputVTypeTd];
+    
+        const factorValues = factorInputs.map(input => parseFloat(input));
+        const typeValues = typeInputs.map(input => parseFloat(input));
+    
+        const calculateResult = (factor:any, type:any) => 2000 * factor * type;
+    
+        const [resutlBz, resutlBa, resutlBb, resutlBc, resutlBd] = factorValues.map((factor, index) =>
+            calculateResult(factor, typeValues[index])
+        );
+    
+        setCalculatedValueBz(resutlBz.toFixed(2));
+        setCalculatedValueBa(resutlBa.toFixed(2));
+        setCalculatedValueBb(resutlBb.toFixed(2));
+        setCalculatedValueBc(resutlBc.toFixed(2));
+        setCalculatedValueBd(resutlBd.toFixed(2));
+    
+        return { resutlBz, resutlBa, resutlBb, resutlBc, resutlBd };
+    };
 
-        const resutlBz = 2000 * Fz * Tz
-        const resutlBa = 2000 * Fa * Ta
-        const resutlBb = 2000 * Fb * Tb
-        const resutlBc = 2000 * Fc * Tc
-        const resutlBd = 2000 * Fd * Td
-
-        setCalculatedValueBz(resutlBz.toFixed(2))
-        setCalculatedValueBa(resutlBa.toFixed(2))
-        setCalculatedValueBb(resutlBb.toFixed(2))
-        setCalculatedValueBc(resutlBc.toFixed(2))
-        setCalculatedValueBd(resutlBd.toFixed(2))
-
-        return { resutlBz, resutlBa, resutlBb, resutlBc, resutlBd }
-    }
-
+    
     const calculateCValues = () => {
         const Az = getElementValue("A1z")
         const Aa = getElementValue("A1a")
@@ -268,7 +246,7 @@ const CalculationTable = () => {
         const { col1, col2, col3, col4, col5 } = calculategreatesValue();
         const columnsToSum = [col1, col2, col3, col4, col5];
         const validColumns = columnsToSum.filter(column => column || column === 0);
-        const greatestValueSum = validColumns.reduce((sum, column) => sum + parseFloat(column.toString()), 0);
+        const greatestValueSum = validColumns.reduce((sum, column) => sum + parseFloat(column.toString()));
         setCombinedGreatestValue(greatestValueSum);
         return { greatestValueSum, validColumns };
     };
