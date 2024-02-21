@@ -112,24 +112,24 @@ const CalculationTable = () => {
 
 
 
-    const downloadTableData = () => {
-        const fixedHeaders = ['Variables', 'Staff Exposure', 'Vehicle Type', 'Usage Factor', 'Interpretation'];
-        const allHeaders = fixedHeaders;
-        const data = [
-          [ "n1", getElementValue("n1z"), getElementValue("n1a"), getElementValue("n1b"), getElementValue("n1c"), getElementValue("n1d")],
-          ["n2", getElementValue("n2z"), getElementValue("n2a"), getElementValue("n2b"), getElementValue("n2c"), getElementValue("n2d")],
-          ["p", inputValuePz, inputValuePa, inputValuePb, inputValuePc, inputValuePd],
-          [inputFactorFb, inputStaffEb, inputVTypeTb, inputFactorFb, inputValuePb],
-          [inputFactorFc, inputStaffEc, inputVTypeTc, inputFactorFc, inputValuePc],
-          [inputFactorFd, inputStaffEd, inputVTypeTd, inputFactorFd, inputValuePd],
-        ];
-        const ws = XLSX.utils.aoa_to_sheet([allHeaders, ...data]);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-        XLSX.writeFile(wb, 'table_data.xlsx');
-      };
+//     const downloadTableData = () => {
+//         const fixedHeaders = ['Variables', 'Staff Exposure', 'Vehicle Type', 'Usage Factor', 'Interpretation'];
+//         const allHeaders = fixedHeaders;
+//         const data = [
+//           [ "n1", getElementValue("n1z"), getElementValue("n1a"), getElementValue("n1b"), getElementValue("n1c"), getElementValue("n1d")],
+//           ["n2", getElementValue("n2z"), getElementValue("n2a"), getElementValue("n2b"), getElementValue("n2c"), getElementValue("n2d")],
+//           ["p", inputValuePz, inputValuePa, inputValuePb, inputValuePc, inputValuePd],
+//           [inputFactorFb, inputStaffEb, inputVTypeTb, inputFactorFb, inputValuePb],
+//           [inputFactorFc, inputStaffEc, inputVTypeTc, inputFactorFc, inputValuePc],
+//           [inputFactorFd, inputStaffEd, inputVTypeTd, inputFactorFd, inputValuePd],
+//         ];
+//         const ws = XLSX.utils.aoa_to_sheet([allHeaders, ...data]);
+//         const wb = XLSX.utils.book_new();
+//         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+//         XLSX.writeFile(wb, 'table_data.xlsx');
+//       };
       
-<button onClick={downloadTableData}>Download Table Data</button>
+// <button onClick={downloadTableData}>Download Table Data</button>
 
 
     const parkingOptions = generateParkingOptions();
