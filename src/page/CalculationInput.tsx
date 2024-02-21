@@ -274,8 +274,8 @@ const CalculationTable = () => {
     };
 
     const calculateTotalAirSupply = () => {
-        const { greatestValueSum} = calculateCombinedGreatestValue();
-        const Ex = parseFloat(percentValue) / 100; 
+        const { greatestValueSum } = calculateCombinedGreatestValue();
+        const Ex = parseFloat(percentValue);
         const totalAirSupply = Ex * greatestValueSum;
         setCalculateTotalAirSupply(totalAirSupply);
     };
@@ -1090,7 +1090,7 @@ const CalculationTable = () => {
                 </div>
                 <div className="pt-10">
                     <button onClick={calculateCombinedGreatestValue} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Calculate Total Air Exhaust</button>
-                    <p className="pt-4">Total Air Exhaust : {combinedGreatestValue === null || isNaN(combinedGreatestValue)  ? "Result" : `${combinedGreatestValue.toFixed(2)} L/s`}</p>
+                    <p className="pt-4">Total Air Exhaust : {combinedGreatestValue === null || isNaN(combinedGreatestValue) ? "Result" : `${combinedGreatestValue.toFixed(2)} L/s`}</p>
                 </div>
                 <div className="pt-10">
                     <button onClick={calculateTotalAirSupply} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Calculate Total Air Supply </button>
