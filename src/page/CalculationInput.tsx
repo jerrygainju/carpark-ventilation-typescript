@@ -1120,7 +1120,7 @@ const CalculationTable = () => {
                         Total Air Supply : {calculateAirSupply === null || isNaN(calculateAirSupply) ? 'Result' : `${calculateAirSupply.toFixed(2)} L/s`}
                     </p>
                 </div>
-                <button onClick={downloadTableData}>Download Table Data</button>
+                {/* <button onClick={downloadTableData}>Download Table Data</button> */}
             </div>
         </div>
     )
