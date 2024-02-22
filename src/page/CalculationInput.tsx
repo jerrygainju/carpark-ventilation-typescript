@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Select from "react-select";
-import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx';
 import * as ExcelJS from 'exceljs';
 
 const percentageOptions = () => {
