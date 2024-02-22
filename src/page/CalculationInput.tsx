@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Select from "react-select";
-// import * as XLSX from 'xlsx';
-
+import * as XLSX from 'xlsx';
+import * as ExcelJS from 'exceljs';
 
 const percentageOptions = () => {
     const options = [];
@@ -46,6 +46,7 @@ const generateStaffUsageFactor = () => {
         { value: '2', label: 'Staff in car park enclosure' }
     ]
 }
+
 const CalculationTable = () => {
     const [greatestValueCol1, setGreatestValueCol1] = useState<number | null>(null);
     const [greatestValueCol2, setGreatestValueCol2] = useState<number | null>(null);
@@ -112,25 +113,63 @@ const CalculationTable = () => {
 
 
 
-//     const downloadTableData = () => {
-//         const fixedHeaders = ['Variables', 'Staff Exposure', 'Vehicle Type', 'Usage Factor', 'Interpretation'];
-//         const allHeaders = fixedHeaders;
-//         const data = [
-//           [ "n1", getElementValue("n1z"), getElementValue("n1a"), getElementValue("n1b"), getElementValue("n1c"), getElementValue("n1d")],
-//           ["n2", getElementValue("n2z"), getElementValue("n2a"), getElementValue("n2b"), getElementValue("n2c"), getElementValue("n2d")],
-//           ["p", inputValuePz, inputValuePa, inputValuePb, inputValuePc, inputValuePd],
-//           [inputFactorFb, inputStaffEb, inputVTypeTb, inputFactorFb, inputValuePb],
-//           [inputFactorFc, inputStaffEc, inputVTypeTc, inputFactorFc, inputValuePc],
-//           [inputFactorFd, inputStaffEd, inputVTypeTd, inputFactorFd, inputValuePd],
-//         ];
-//         const ws = XLSX.utils.aoa_to_sheet([allHeaders, ...data]);
-//         const wb = XLSX.utils.book_new();
-//         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-//         XLSX.writeFile(wb, 'table_data.xlsx');
-//       };
-      
-// <button onClick={downloadTableData}>Download Table Data</button>
+    // const downloadTableData = () => {
+    //     const fixedHeaders = ['Variables', getElementStringValue("h1"),  getElementStringValue("h2"),  getElementStringValue("h3"),  getElementStringValue("h4"),  getElementStringValue("h5")];
+    //     const data = [
+    //       [ "n1", getElementValue("n1z"), getElementValue("n1a"), getElementValue("n1b"), getElementValue("n1c"), getElementValue("n1d")],
+    //       [ "n2", getElementValue("n2z"), getElementValue("n2a"), getElementValue("n2b"), getElementValue("n2c"), getElementValue("n2d")],
+    //       [ "p", inputValuePz, inputValuePa, inputValuePb, inputValuePc, inputValuePd],
+    //       [ "d1", , getElementValue("d1z"), getElementValue("d1a"), getElementValue("d1b"), getElementValue("d1c"), getElementValue("d1d")],
+    //       [ "d2", , getElementValue("d2z"), getElementValue("d2a"), getElementValue("d2b"), getElementValue("d2c"), getElementValue("d2d")],
+    //       [ "E", inputStaffEz, inputStaffEa, inputStaffEb, inputStaffEc, inputStaffEd],
+    //       [ "T", inputVTypeTz, inputVTypeTa, inputVTypeTb, inputVTypeTc, inputVTypeTd],
+    //       [ "F", inputFactorFz, inputFactorFa, inputFactorFb, inputFactorFc, inputFactorFd], 
+    //       [ "A", getElementValue("A1z"), getElementValue("A1a"), getElementValue("A1b"), getElementValue("A1c"), getElementValue("A1d")],
+    //     ];
+    //     const ws = XLSX.utils.aoa_to_sheet([fixedHeaders, ...data]);
+    //     const wb = XLSX.utils.book_new();
+    //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    //     XLSX.writeFile(wb, 'car_park.xlsx');
+    //   };
 
+    const downloadTableData = () => {
+        const workbook = new ExcelJS.Workbook();
+        const sheet = workbook.addWorksheet("My sheet");
+        sheet.properties.defaultRowHeight = 20;
+
+     const fixedHeaders = ['Variables', getElementStringValue("h1"),  getElementStringValue("h2"),  getElementStringValue("h3"),  getElementStringValue("h4"),  getElementStringValue("h5")];
+    const data = [
+            ["n1", getElementValue("n1z"), getElementValue("n1a"), getElementValue("n1b"), getElementValue("n1c"), getElementValue("n1d")],
+            ["n2", getElementValue("n2z"), getElementValue("n2a"), getElementValue("n2b"), getElementValue("n2c"), getElementValue("n2d")],
+            ["p", parseFloat(inputValuePz), parseFloat(inputValuePa), parseFloat(inputValuePb), parseFloat(inputValuePc), parseFloat(inputValuePd)],
+            ["d1", getElementValue("d1z"), getElementValue("d1a"), getElementValue("d1b"), getElementValue("d1c"), getElementValue("d1d")],
+            ["d2", getElementValue("d2z"), getElementValue("d2a"), getElementValue("d2b"), getElementValue("d2c"), getElementValue("d2d")],
+            ["E", parseFloat(inputStaffEz), parseFloat(inputStaffEa), parseFloat(inputStaffEb), parseFloat(inputStaffEc), parseFloat(inputStaffEd)],
+            ["T", parseFloat(inputVTypeTz), parseFloat(inputVTypeTa), parseFloat(inputVTypeTb), parseFloat(inputVTypeTc), parseFloat(inputVTypeTd)],
+            ["F", parseFloat(inputFactorFz), parseFloat(inputFactorFa), parseFloat(inputFactorFb), parseFloat(inputFactorFc), parseFloat(inputFactorFd)],
+            ["A", getElementValue("A1z"), getElementValue("A1a"), getElementValue("A1b"), getElementValue("A1c"), getElementValue("A1d")],
+        ];
+    
+        sheet.columns = fixedHeaders.map(header => ({
+            header,
+            key: header,  
+            width: 20,
+            style: { font: { bold: true} },  
+        }));
+        data.forEach(rowData => {
+            sheet.addRow(rowData);
+        });
+    
+        workbook.xlsx.writeBuffer().then(data => {
+            const blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheet.sheet" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "car_park.xlsx";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    }
 
     const parkingOptions = generateParkingOptions();
     const vehicleOptions = generateVehicleTypeFactor();
@@ -143,6 +182,11 @@ const CalculationTable = () => {
         return element ? parseFloat(element.value) : 0;
     };
 
+    const getElementStringValue = (elementId: string): string => {
+        const element = document.getElementById(elementId) as HTMLInputElement | null;
+        return element ? element.value : '';
+    };
+    
     const calculateValues = (): Record<string, number> => {
         const inputKeys: string[] = ['z', 'a', 'b', 'c', 'd'];
         const stateSetters: Record<string, React.Dispatch<React.SetStateAction<string>>> = {
@@ -306,6 +350,7 @@ const CalculationTable = () => {
                             </div>
                             <input
                                 type="text"
+                                id="h1"
                                 placeholder="Enter Basement"
                                 className="w-32 py-2 bg-slate-50"
                             />
@@ -313,6 +358,7 @@ const CalculationTable = () => {
                         <th className="border px-4">
                             <input
                                 type="text"
+                                id="h2"
                                 placeholder="Enter Basement"
                                 className="w-32 py-2 bg-slate-50"
                             />
@@ -320,6 +366,7 @@ const CalculationTable = () => {
                         <th className="border px-4">
                             <input
                                 type="text"
+                                id="h3"
                                 placeholder="Enter Basement"
                                 className="w-32 py-2 bg-slate-50"
                             />
@@ -327,6 +374,7 @@ const CalculationTable = () => {
                         <th className="border px-4">
                             <input
                                 type="text"
+                                id="h4"
                                 placeholder="Enter Basement"
                                 className="w-32 py-2 bg-slate-50"
                             />
@@ -334,6 +382,7 @@ const CalculationTable = () => {
                         <th className="border px-4">
                             <input
                                 type="text"
+                                id="h5"
                                 placeholder="Enter Basement"
                                 className="w-32 py-2 bg-slate-50"
                             />
@@ -1120,7 +1169,9 @@ const CalculationTable = () => {
                         Total Air Supply : {calculateAirSupply === null || isNaN(calculateAirSupply) ? 'Result' : `${calculateAirSupply.toFixed(2)} L/s`}
                     </p>
                 </div>
-                {/* <button onClick={downloadTableData}>Download Table Data</button> */}
+                <div className="pt-10">
+                <button onClick={downloadTableData} className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700 focus:outline-none focus:shadow-outline-blue">Download Excel File </button>
+            </div>
             </div>
         </div>
     )
