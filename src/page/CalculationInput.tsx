@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Select from "react-select";
-import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx';
 import * as ExcelJS from 'exceljs';
+import { getElementStringValue, getElementValue } from "./GetValue";
 
 const percentageOptions = () => {
     const options = [];
@@ -17,7 +18,7 @@ const generateParkingOptions = () => {
         { value: '0.3', label: 'Residental' },
         { value: '0.5', label: 'Commercial' },
         { value: '0.7', label: 'Retail/food and drink services' },
-        { value: '1.0', label: 'Entertainment/sports cnetres' },
+        { value: '1', label: 'Entertainment/sports cnetres' },
         { value: '2.4', label: 'vehicle depots (see Note)' },
     ];
 };
@@ -31,10 +32,10 @@ const generateStaffExposureOptions = () => {
 
 const generateVehicleTypeFactor = () => {
     return [
-        { value: '1.0', label: 'No special vehicle population' },
+        { value: '1', label: 'No special vehicle population' },
         { value: '2.4', label: 'Diesel vehicles' },
-        { value: '1.0', label: 'LPG vehicles' },
-        { value: '1.0', label: 'CNG vehicles' },
+        { value: '1', label: 'LPG vehicles' },
+        { value: '1', label: 'CNG vehicles' },
         { value: '0.1', label: 'Electric powered vehicles' },
         { value: '0.25', label: 'Motorcycles' },
     ]
@@ -54,10 +55,7 @@ const CalculationTable = () => {
     const [greatestValueCol4, setGreatestValueCol4] = useState<number | null>(null);
     const [greatestValueCol5, setGreatestValueCol5] = useState<number | null>(null);
 
-
     const [combinedGreatestValue, setCombinedGreatestValue] = useState<number | null>(null);
-
-
 
     const [inputFactorFz, setInputFz] = useState('');
     const [inputFactorFa, setInputFa] = useState('');
@@ -111,8 +109,6 @@ const CalculationTable = () => {
 
     const [calculateAirSupply, setCalculateTotalAirSupply] = useState<number | null>(null);
 
-
-
     // const downloadTableData = () => {
     //     const fixedHeaders = ['Variables', getElementStringValue("h1"),  getElementStringValue("h2"),  getElementStringValue("h3"),  getElementStringValue("h4"),  getElementStringValue("h5")];
     //     const data = [
@@ -137,29 +133,41 @@ const CalculationTable = () => {
         const sheet = workbook.addWorksheet("My sheet");
         sheet.properties.defaultRowHeight = 20;
 
-     const fixedHeaders = ['Variables', getElementStringValue("h1"),  getElementStringValue("h2"),  getElementStringValue("h3"),  getElementStringValue("h4"),  getElementStringValue("h5")];
-    const data = [
+        const fixedHeaders = ['Variables', getElementStringValue("h1"), getElementStringValue("h2"), getElementStringValue("h3"), getElementStringValue("h4"), getElementStringValue("h5")];
+        const data = [
             ["n1", getElementValue("n1z"), getElementValue("n1a"), getElementValue("n1b"), getElementValue("n1c"), getElementValue("n1d")],
             ["n2", getElementValue("n2z"), getElementValue("n2a"), getElementValue("n2b"), getElementValue("n2c"), getElementValue("n2d")],
-            ["p", parseFloat(inputValuePz), parseFloat(inputValuePa), parseFloat(inputValuePb), parseFloat(inputValuePc), parseFloat(inputValuePd)],
+            ["P", parseInt(inputValuePz), parseInt(inputValuePa), parseInt(inputValuePb), parseInt(inputValuePc), parseInt(inputValuePd)],
             ["d1", getElementValue("d1z"), getElementValue("d1a"), getElementValue("d1b"), getElementValue("d1c"), getElementValue("d1d")],
             ["d2", getElementValue("d2z"), getElementValue("d2a"), getElementValue("d2b"), getElementValue("d2c"), getElementValue("d2d")],
-            ["E", parseFloat(inputStaffEz), parseFloat(inputStaffEa), parseFloat(inputStaffEb), parseFloat(inputStaffEc), parseFloat(inputStaffEd)],
-            ["T", parseFloat(inputVTypeTz), parseFloat(inputVTypeTa), parseFloat(inputVTypeTb), parseFloat(inputVTypeTc), parseFloat(inputVTypeTd)],
+            ["E", parseInt(inputStaffEz), parseInt(inputStaffEa), parseInt(inputStaffEb), parseInt(inputStaffEc), parseInt(inputStaffEd)],
+            ["T", parseInt(inputVTypeTz), parseInt(inputVTypeTa), parseInt(inputVTypeTb), parseInt(inputVTypeTc), parseInt(inputVTypeTd)],
             ["F", parseFloat(inputFactorFz), parseFloat(inputFactorFa), parseFloat(inputFactorFb), parseFloat(inputFactorFc), parseFloat(inputFactorFd)],
             ["A", getElementValue("A1z"), getElementValue("A1a"), getElementValue("A1b"), getElementValue("A1c"), getElementValue("A1d")],
-        ];
-    
+            [],
+            ["Unit of Measurement (L/s)"],
+            ["C (Contaminant Generation Rate)", parseInt(calculatedValue), parseInt(calculatedValueCa), parseInt(calculatedValueCb), parseInt(calculatedValueCc), parseInt(calculatedValueCd)],
+            ["(a) 0.85 x C x E x T", parseInt(calculatedValueAz), parseInt(calculatedValueAa), parseInt(calculatedValueAb), parseInt(calculatedValueAc), parseInt(calculatedValueAd)],
+            ["(b) 2000 x F x T", parseInt(calculatedValueBz), parseInt(calculatedValueBa), parseInt(calculatedValueBb), parseInt(calculatedValueBc), parseInt(calculatedValueBd)],
+            ["(c) 2.5 x A", parseInt(calculatedValueC1z), parseInt(calculatedValueC1a), parseInt(calculatedValueC1b), parseInt(calculatedValueC1c), parseInt(calculatedValueC1d)],
+            [],
+            ["Suggested Value", greatestValueCol1, greatestValueCol2, greatestValueCol3, greatestValueCol4, greatestValueCol5],
+            ["Total Air Exhaust", combinedGreatestValue],
+            [],
+            ["Air Supply Percentage(%)", (parseFloat(percentValue) * 100)],
+            ["Total Air Supply", calculateAirSupply]
+          ];
+
         sheet.columns = fixedHeaders.map(header => ({
             header,
-            key: header,  
-            width: 20,
-            style: { font: { bold: true} },  
+            key: header,
+            width: 30,
+            style: { font: { bold: true } },
         }));
         data.forEach(rowData => {
             sheet.addRow(rowData);
         });
-    
+
         workbook.xlsx.writeBuffer().then(data => {
             const blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheet.sheet" });
             const link = document.createElement("a");
@@ -177,16 +185,7 @@ const CalculationTable = () => {
     const factorOptions = generateStaffUsageFactor();
     const percentOptions = percentageOptions();
 
-    const getElementValue = (elementId: string): number => {
-        const element = document.getElementById(elementId) as HTMLInputElement | null;
-        return element ? parseFloat(element.value) : 0;
-    };
-
-    const getElementStringValue = (elementId: string): string => {
-        const element = document.getElementById(elementId) as HTMLInputElement | null;
-        return element ? element.value : '';
-    };
-    
+ 
     const calculateValues = (): Record<string, number> => {
         const inputKeys: string[] = ['z', 'a', 'b', 'c', 'd'];
         const stateSetters: Record<string, React.Dispatch<React.SetStateAction<string>>> = {
@@ -205,8 +204,9 @@ const CalculationTable = () => {
             const d2 = getElementValue(`d2${suffix}`);
 
             const result = P * (100 * n1 + n1 * d1 + n2 * d2);
-            stateSetters[suffix](result.toFixed(2));
-            return result;
+            const roundedResult = Math.round(result); // Round off the value
+            stateSetters[suffix](roundedResult.toString());
+            return roundedResult;
         });
 
         return inputKeys.reduce((acc, suffix, index) => {
@@ -231,17 +231,17 @@ const CalculationTable = () => {
         const Tc = parseFloat(inputVTypeTc)
         const Td = parseFloat(inputVTypeTd)
 
-        const resultA1z = 0.85 * resultCz * Ez * Tz;
-        const resultA1a = 0.85 * resultCa * Ea * Ta;
-        const resultA1b = 0.85 * resultCb * Eb * Tb;
-        const resultA1c = 0.85 * resultCc * Ec * Tc;
-        const resultA1d = 0.85 * resultCd * Ed * Td;
+        const resultA1z = Math.round(0.85 * resultCz * Ez * Tz);
+        const resultA1a = Math.round(0.85 * resultCa * Ea * Ta);
+        const resultA1b = Math.round(0.85 * resultCb * Eb * Tb);
+        const resultA1c = Math.round(0.85 * resultCc * Ec * Tc);
+        const resultA1d = Math.round(0.85 * resultCd * Ed * Td);
 
-        setCalculatedValueAz(resultA1z.toFixed(2))
-        setCalculatedValueAa(resultA1a.toFixed(2))
-        setCalculatedValueAb(resultA1b.toFixed(2))
-        setCalculatedValueAc(resultA1c.toFixed(2))
-        setCalculatedValueAd(resultA1d.toFixed(2))
+        setCalculatedValueAz(resultA1z.toString())
+        setCalculatedValueAa(resultA1a.toString())
+        setCalculatedValueAb(resultA1b.toString())
+        setCalculatedValueAc(resultA1c.toString())
+        setCalculatedValueAd(resultA1d.toString())
 
         return { resultA1z, resultA1a, resultA1b, resultA1c, resultA1d }
     }
@@ -249,26 +249,26 @@ const CalculationTable = () => {
     const calculateBValues = () => {
         const factorInputs = [inputFactorFz, inputFactorFa, inputFactorFb, inputFactorFc, inputFactorFd];
         const typeInputs = [inputVTypeTz, inputVTypeTa, inputVTypeTb, inputVTypeTc, inputVTypeTd];
-    
+
         const factorValues = factorInputs.map(input => parseFloat(input));
         const typeValues = typeInputs.map(input => parseFloat(input));
-    
-        const calculateResult = (factor:any, type:any) => 2000 * factor * type;
-    
+
+        const calculateResult = (factor: any, type: any) => Math.round(2000 * factor * type);
+
         const [resutlBz, resutlBa, resutlBb, resutlBc, resutlBd] = factorValues.map((factor, index) =>
             calculateResult(factor, typeValues[index])
         );
-    
-        setCalculatedValueBz(resutlBz.toFixed(2));
-        setCalculatedValueBa(resutlBa.toFixed(2));
-        setCalculatedValueBb(resutlBb.toFixed(2));
-        setCalculatedValueBc(resutlBc.toFixed(2));
-        setCalculatedValueBd(resutlBd.toFixed(2));
-    
+
+        setCalculatedValueBz(resutlBz.toString());
+        setCalculatedValueBa(resutlBa.toString());
+        setCalculatedValueBb(resutlBb.toString());
+        setCalculatedValueBc(resutlBc.toString());
+        setCalculatedValueBd(resutlBd.toString());
+
         return { resutlBz, resutlBa, resutlBb, resutlBc, resutlBd };
     };
 
-    
+
     const calculateCValues = () => {
         const Az = getElementValue("A1z")
         const Aa = getElementValue("A1a")
@@ -276,17 +276,17 @@ const CalculationTable = () => {
         const Ac = getElementValue("A1c")
         const Ad = getElementValue("A1d")
 
-        const resultAz = 2.5 * Az
-        const resultAa = 2.5 * Aa
-        const resultAb = 2.5 * Ab
-        const resultAc = 2.5 * Ac
-        const resultAd = 2.5 * Ad
+        const resultAz = Math.round(2.5 * Az)
+        const resultAa = Math.round(2.5 * Aa)
+        const resultAb = Math.round(2.5 * Ab)
+        const resultAc = Math.round(2.5 * Ac)
+        const resultAd = Math.round(2.5 * Ad)
 
-        setCalculatedValueC1z(resultAz.toFixed(2))
-        setCalculatedValueC1a(resultAa.toFixed(2))
-        setCalculatedValueC1b(resultAb.toFixed(2))
-        setCalculatedValueC1c(resultAc.toFixed(2))
-        setCalculatedValueC1d(resultAd.toFixed(2))
+        setCalculatedValueC1z(resultAz.toString())
+        setCalculatedValueC1a(resultAa.toString())
+        setCalculatedValueC1b(resultAb.toString())
+        setCalculatedValueC1c(resultAc.toString())
+        setCalculatedValueC1d(resultAd.toString())
 
         return { resultAz, resultAa, resultAb, resultAc, resultAd }
     }
@@ -322,11 +322,9 @@ const CalculationTable = () => {
     const calculateTotalAirSupply = () => {
         const { greatestValueSum } = calculateCombinedGreatestValue();
         const Ex = parseFloat(percentValue);
-        const totalAirSupply = Ex * greatestValueSum;
+        const totalAirSupply = Math.round(Ex * greatestValueSum);
         setCalculateTotalAirSupply(totalAirSupply);
     };
-
-
 
     return (
         <div>
@@ -1063,44 +1061,44 @@ const CalculationTable = () => {
                         <td className="border pl-2">
                             P × (100 × n1 + n1 × d1 + n2 × d2)
                         </td>
-                        <td className="border pl-16 text-gray-600"> {isNaN(parseFloat(calculatedValue)) ? "Result" : `${parseFloat(calculatedValue).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueCa)) ? "Result" : `${parseFloat(calculatedValueCa).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueCb)) ? "Result" : `${parseFloat(calculatedValueCb).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueCc)) ? "Result" : `${parseFloat(calculatedValueCc).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueCd)) ? "Result" : `${parseFloat(calculatedValueCd).toFixed(2)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600"> {isNaN(parseInt(calculatedValue)) ? "Result" : `${parseInt(calculatedValue)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueCa)) ? "Result" : `${parseInt(calculatedValueCa)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueCb)) ? "Result" : `${parseInt(calculatedValueCb)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueCc)) ? "Result" : `${parseInt(calculatedValueCc)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueCd)) ? "Result" : `${parseInt(calculatedValueCd)} L/s`}</td>
                         <td className="border"><button onClick={calculateValues} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Calculate</button></td>
                     </tr>
                     <tr>
                         <td className=" border border-r-0 p-2">(a) 0.85 x C x E x T</td>
                         <td className="border border-l-0 pl-2">
                         </td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueAz)) ? "Result" : `${parseFloat(calculatedValueAz).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueAa)) ? "Result" : `${parseFloat(calculatedValueAa).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueAb)) ? "Result" : `${parseFloat(calculatedValueAb).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueAc)) ? "Result" : `${parseFloat(calculatedValueAc).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueAd)) ? "Result" : `${parseFloat(calculatedValueAd).toFixed(2)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueAz)) ? "Result" : `${parseInt(calculatedValueAz)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueAa)) ? "Result" : `${parseInt(calculatedValueAa)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueAb)) ? "Result" : `${parseInt(calculatedValueAb)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueAc)) ? "Result" : `${parseInt(calculatedValueAc)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueAd)) ? "Result" : `${parseInt(calculatedValueAd)} L/s`}</td>
                         <td className="border"><button onClick={calculateAValues} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Calculate</button></td>
                     </tr>
                     <tr>
                         <td className="border border-r-0 p-2">(b) 2000 x F x T</td>
                         <td className="border border-l-0 pl-2">
                         </td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueBz)) ? "Result" : `${parseFloat(calculatedValueBz).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueBa)) ? "Result" : `${parseFloat(calculatedValueBa).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueBb)) ? "Result" : `${parseFloat(calculatedValueBb).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueBc)) ? "Result" : `${parseFloat(calculatedValueBc).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueBd)) ? "Result" : `${parseFloat(calculatedValueBd).toFixed(2)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueBz)) ? "Result" : `${parseInt(calculatedValueBz)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueBa)) ? "Result" : `${parseInt(calculatedValueBa)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueBb)) ? "Result" : `${parseInt(calculatedValueBb)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueBc)) ? "Result" : `${parseInt(calculatedValueBc)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueBd)) ? "Result" : `${parseInt(calculatedValueBd)} L/s`}</td>
                         <td className="border"><button onClick={calculateBValues} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Calculate</button></td>
                     </tr>
                     <tr>
                         <td className="border border-r-0 p-2">(c) 2.5 x A</td>
                         <td className="pl-2">
                         </td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueC1z)) ? "Result" : `${parseFloat(calculatedValueC1z).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueC1a)) ? "Result" : `${parseFloat(calculatedValueC1a).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueC1b)) ? "Result" : `${parseFloat(calculatedValueC1b).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueC1c)) ? "Result" : `${parseFloat(calculatedValueC1c).toFixed(2)} L/s`}</td>
-                        <td className="border pl-16 text-gray-600">{isNaN(parseFloat(calculatedValueC1d)) ? "Result" : `${parseFloat(calculatedValueC1d).toFixed(2)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueC1z)) ? "Result" : `${parseInt(calculatedValueC1z)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueC1a)) ? "Result" : `${parseInt(calculatedValueC1a)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueC1b)) ? "Result" : `${parseInt(calculatedValueC1b)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueC1c)) ? "Result" : `${parseInt(calculatedValueC1c)} L/s`}</td>
+                        <td className="border pl-16 text-gray-600">{isNaN(parseInt(calculatedValueC1d)) ? "Result" : `${parseInt(calculatedValueC1d)} L/s`}</td>
                         <td className="border"><button onClick={calculateCValues} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Calculate</button></td>
                     </tr>
                 </table>
@@ -1112,36 +1110,36 @@ const CalculationTable = () => {
                         Design should be based on{' '}
                         {greatestValueCol1 === null || isNaN(greatestValueCol1)
                             ? 'Result'
-                            : `${greatestValueCol1.toFixed(2)} L/s for column 1`}
+                            : `${greatestValueCol1} L/s for column 1`}
                     </p>
                     <p className="pt-2">
                         Design should be based on{' '}
                         {greatestValueCol2 === null || isNaN(greatestValueCol2)
                             ? 'Result'
-                            : `${greatestValueCol2.toFixed(2)} L/s for column 2`}
+                            : `${greatestValueCol2} L/s for column 2`}
                     </p>
                     <p className="pt-2">
                         Design should be based on{' '}
                         {greatestValueCol3 === null || isNaN(greatestValueCol3)
                             ? 'Result'
-                            : `${greatestValueCol3.toFixed(2)} L/s for column 3`}
+                            : `${greatestValueCol3} L/s for column 3`}
                     </p>
                     <p className="pt-2">
                         Design should be based on{' '}
                         {greatestValueCol4 === null || isNaN(greatestValueCol4)
                             ? 'Result'
-                            : `${greatestValueCol4.toFixed(2)} L/s for column 4`}
+                            : `${greatestValueCol4} L/s for column 4`}
                     </p>
                     <p className="pt-2">
                         Design should be based on{' '}
                         {greatestValueCol5 === null || isNaN(greatestValueCol5)
                             ? 'Result'
-                            : `${greatestValueCol5.toFixed(2)} L/s for column 5`}
+                            : `${greatestValueCol5} L/s for column 5`}
                     </p>
                 </div>
                 <div className="pt-10">
                     <button onClick={calculateCombinedGreatestValue} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Calculate Total Air Exhaust</button>
-                    <p className="pt-4">Total Air Exhaust : {combinedGreatestValue === null || isNaN(combinedGreatestValue) ? "Result" : `${combinedGreatestValue.toFixed(2)} L/s`}</p>
+                    <p className="pt-4">Total Air Exhaust : {combinedGreatestValue === null || isNaN(combinedGreatestValue) ? "Result" : `${combinedGreatestValue} L/s`}</p>
                 </div>
                 <div className="pt-10">
                     <button onClick={calculateTotalAirSupply} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">Calculate Total Air Supply </button>
@@ -1166,12 +1164,12 @@ const CalculationTable = () => {
                         />
                     </div>
                     <p className="pt-4">
-                        Total Air Supply : {calculateAirSupply === null || isNaN(calculateAirSupply) ? 'Result' : `${calculateAirSupply.toFixed(2)} L/s`}
+                        Total Air Supply : {calculateAirSupply === null || isNaN(calculateAirSupply) ? 'Result' : `${calculateAirSupply} L/s`}
                     </p>
                 </div>
                 <div className="pt-10">
-                <button onClick={downloadTableData} className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700 focus:outline-none focus:shadow-outline-blue">Download Excel File </button>
-            </div>
+                    <button onClick={downloadTableData} className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700 focus:outline-none focus:shadow-outline-blue">Download Excel File </button>
+                </div>
             </div>
         </div>
     )
