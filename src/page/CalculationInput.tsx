@@ -268,7 +268,6 @@ const CalculationTable = () => {
         return { resutlBz, resutlBa, resutlBb, resutlBc, resutlBd };
     };
 
-
     const calculateCValues = () => {
         const Az = getElementValue("A1z")
         const Aa = getElementValue("A1a")
@@ -512,7 +511,6 @@ const CalculationTable = () => {
                                         {context === 'menu' ? option.label : option.value}
                                     </div>
                                 )}
-
                             />
                         </td>
                         <td className="border">
