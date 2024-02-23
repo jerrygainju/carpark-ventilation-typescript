@@ -108,7 +108,7 @@ const Car = () => {
       <div className="text-sm pt-4 font-bold">
         {/* C (Contaminant Generation Rate) = P × (100 × n1 + n1 × d1 + n2 × d2) */}
       </div>
-      <div className="flex pt-8 pl-32">
+      <div className="flex pt-8 pl-32 pb-20">
         <img src={table1} height={600} width={600} alt="Table 1" />
         <img src={table2} height={600} width={600} alt="Table 2" />
       </div>
