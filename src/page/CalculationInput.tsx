@@ -346,7 +346,7 @@ const CalculationTable = () => {
                         </th>
                     </tr>
                     <tr>
-                        <td className="border p-2" id = "c1">
+                        <td className="border p-2">
                             No of parking spaces in the zone of level under consideration
                         </td>
                         <td className="border pl-16">
