@@ -3,6 +3,7 @@ import Table from "./Table";
 import { useRef } from 'react';
 import table1 from '../public/table1.png';
 import table2 from '../public/table-2.png';
+// import { useNavigate } from 'react-router-dom';
 
 const Car = () => {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -12,15 +13,23 @@ const Car = () => {
       window.scrollTo({ top: tableRef.current.offsetTop, behavior: 'smooth' });
     }
   };
+  // const navigate = useNavigate();
+
+  // const hanldeNavigate = () => {
+  //   navigate('/duct-size')
+  // }
 
   return (
     <div className="bg-slate-50 pl-10 ">
       <div className="flex flex-row gap-14 text-3xl content-center text-center font-bold mt-10">
         Car Park Ventilation
-        <div>
+        <div className="flex gap-10">
           <button className="text-sm border rounded p-2 bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800" onClick={scrollHandler}>
             Click for Information
           </button>
+          {/* <button className="text-sm border rounded p-2 bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800" onClick={hanldeNavigate}>
+            Click for Duct Sizer
+          </button> */}
         </div>
       </div>
       <div>
@@ -108,7 +117,7 @@ const Car = () => {
       <div className="text-sm pt-4 font-bold">
         {/* C (Contaminant Generation Rate) = P × (100 × n1 + n1 × d1 + n2 × d2) */}
       </div>
-      <div className="flex pt-8 pl-32">
+      <div className="flex pt-8 pl-32 pb-20">
         <img src={table1} height={600} width={600} alt="Table 1" />
         <img src={table2} height={600} width={600} alt="Table 2" />
       </div>

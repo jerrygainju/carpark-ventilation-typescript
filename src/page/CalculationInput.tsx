@@ -2,51 +2,8 @@ import { useState } from "react";
 import Select from "react-select";
 // import * as XLSX from 'xlsx';
 import * as ExcelJS from 'exceljs';
-import { getElementStringValue, getElementValue } from "./GetValue";
+import { generateParkingOptions, generateStaffExposureOptions, generateStaffUsageFactor, generateVehicleTypeFactor, getElementStringValue, getElementValue, percentageOptions } from "./Extra ";
 
-const percentageOptions = () => {
-    const options = [];
-    for (let i = 75; i <= 90; i++) {
-        const percentage = i / 100;
-        options.push({ value: percentage.toString(), label: `${i}%` });
-    }
-    return options;
-};
-
-const generateParkingOptions = () => {
-    return [
-        { value: '0.3', label: 'Residental' },
-        { value: '0.5', label: 'Commercial' },
-        { value: '0.7', label: 'Retail/food and drink services' },
-        { value: '1', label: 'Entertainment/sports cnetres' },
-        { value: '2.4', label: 'vehicle depots (see Note)' },
-    ];
-};
-
-const generateStaffExposureOptions = () => {
-    return [
-        { value: '1', label: '1' },
-        { value: '1.8', label: '1.8' }
-    ]
-}
-
-const generateVehicleTypeFactor = () => {
-    return [
-        { value: '1', label: 'No special vehicle population' },
-        { value: '2.4', label: 'Diesel vehicles' },
-        { value: '1', label: 'LPG vehicles' },
-        { value: '1', label: 'CNG vehicles' },
-        { value: '0.1', label: 'Electric powered vehicles' },
-        { value: '0.25', label: 'Motorcycles' },
-    ]
-}
-
-const generateStaffUsageFactor = () => {
-    return [
-        { value: '1', label: 'Staff in seperate enclosure' },
-        { value: '2', label: 'Staff in car park enclosure' }
-    ]
-}
 
 const CalculationTable = () => {
     const [greatestValueCol1, setGreatestValueCol1] = useState<number | null>(null);
@@ -133,25 +90,25 @@ const CalculationTable = () => {
         const sheet = workbook.addWorksheet("My sheet");
         sheet.properties.defaultRowHeight = 20;
 
-        const fixedHeaders = ['Variables', getElementStringValue("h1"), getElementStringValue("h2"), getElementStringValue("h3"), getElementStringValue("h4"), getElementStringValue("h5")];
+        const fixedHeaders = ['Interpretation', 'Variables', getElementStringValue("h1"), getElementStringValue("h2"), getElementStringValue("h3"), getElementStringValue("h4"), getElementStringValue("h5")];
         const data = [
-            ["n1", getElementValue("n1z"), getElementValue("n1a"), getElementValue("n1b"), getElementValue("n1c"), getElementValue("n1d")],
-            ["n2", getElementValue("n2z"), getElementValue("n2a"), getElementValue("n2b"), getElementValue("n2c"), getElementValue("n2d")],
-            ["P", parseInt(inputValuePz), parseInt(inputValuePa), parseInt(inputValuePb), parseInt(inputValuePc), parseInt(inputValuePd)],
-            ["d1", getElementValue("d1z"), getElementValue("d1a"), getElementValue("d1b"), getElementValue("d1c"), getElementValue("d1d")],
-            ["d2", getElementValue("d2z"), getElementValue("d2a"), getElementValue("d2b"), getElementValue("d2c"), getElementValue("d2d")],
-            ["E", parseInt(inputStaffEz), parseInt(inputStaffEa), parseInt(inputStaffEb), parseInt(inputStaffEc), parseInt(inputStaffEd)],
-            ["T", parseInt(inputVTypeTz), parseInt(inputVTypeTa), parseInt(inputVTypeTb), parseInt(inputVTypeTc), parseInt(inputVTypeTd)],
-            ["F", parseFloat(inputFactorFz), parseFloat(inputFactorFa), parseFloat(inputFactorFb), parseFloat(inputFactorFc), parseFloat(inputFactorFd)],
-            ["A", getElementValue("A1z"), getElementValue("A1a"), getElementValue("A1b"), getElementValue("A1c"), getElementValue("A1d")],
+            ["No of parking spaces in the zone of level under consideration", "n1", getElementValue("n1z"), getElementValue("n1a"), getElementValue("n1b"), getElementValue("n1c"), getElementValue("n1d")],
+            ["No of parking spaces situated in other parts of the car park, having exit routes passing through the zone or level under consideration", "n2", getElementValue("n2z"), getElementValue("n2a"), getElementValue("n2b"), getElementValue("n2c"), getElementValue("n2d")],
+            ["Parking usage factor (Table A)", "P", parseFloat(inputValuePz), parseFloat(inputValuePa), parseFloat(inputValuePb), parseFloat(inputValuePc), parseFloat(inputValuePd)],
+            ["Average driving distance, in meters, within the zone or level under consideration for the exit of a car parked there", "d1", getElementValue("d1z"), getElementValue("d1a"), getElementValue("d1b"), getElementValue("d1c"), getElementValue("d1d")],
+            ["The average driving distance, in mtrs, within the zone or level under consideration for the exit of a car whose exit routes passes through the zone or level under consideration", "d2", getElementValue("d2z"), getElementValue("d2a"), getElementValue("d2b"), getElementValue("d2c"), getElementValue("d2d")],
+            ["The Staff Exposure Factor (Table C)", "E", parseFloat(inputStaffEz), parseFloat(inputStaffEa), parseFloat(inputStaffEb), parseFloat(inputStaffEc), parseFloat(inputStaffEd)],
+            ["The Vehicle Type Factor (Table B)", "T", parseFloat(inputVTypeTz), parseFloat(inputVTypeTa), parseFloat(inputVTypeTb), parseFloat(inputVTypeTc), parseInt(inputVTypeTd)],
+            ["The Staff Usage Factor (Table C)", "F", parseFloat(inputFactorFz), parseFloat(inputFactorFa), parseFloat(inputFactorFb), parseFloat(inputFactorFc), parseFloat(inputFactorFd)],
+            ["Area", "A", getElementValue("A1z"), getElementValue("A1a"), getElementValue("A1b"), getElementValue("A1c"), getElementValue("A1d")],
             [],
             ["Unit of Measurement (L/s)"],
-            ["C (Contaminant Generation Rate)", parseInt(calculatedValue), parseInt(calculatedValueCa), parseInt(calculatedValueCb), parseInt(calculatedValueCc), parseInt(calculatedValueCd)],
-            ["(a) 0.85 x C x E x T", parseInt(calculatedValueAz), parseInt(calculatedValueAa), parseInt(calculatedValueAb), parseInt(calculatedValueAc), parseInt(calculatedValueAd)],
-            ["(b) 2000 x F x T", parseInt(calculatedValueBz), parseInt(calculatedValueBa), parseInt(calculatedValueBb), parseInt(calculatedValueBc), parseInt(calculatedValueBd)],
-            ["(c) 2.5 x A", parseInt(calculatedValueC1z), parseInt(calculatedValueC1a), parseInt(calculatedValueC1b), parseInt(calculatedValueC1c), parseInt(calculatedValueC1d)],
+            ["C (Contaminant Generation Rate)", , parseInt(calculatedValue), parseInt(calculatedValueCa), parseInt(calculatedValueCb), parseInt(calculatedValueCc), parseInt(calculatedValueCd)],
+            ["(a) 0.85 x C x E x T", , parseInt(calculatedValueAz), parseInt(calculatedValueAa), parseInt(calculatedValueAb), parseInt(calculatedValueAc), parseInt(calculatedValueAd)],
+            ["(b) 2000 x F x T", , parseInt(calculatedValueBz), parseInt(calculatedValueBa), parseInt(calculatedValueBb), parseInt(calculatedValueBc), parseInt(calculatedValueBd)],
+            ["(c) 2.5 x A", , parseInt(calculatedValueC1z), parseInt(calculatedValueC1a), parseInt(calculatedValueC1b), parseInt(calculatedValueC1c), parseInt(calculatedValueC1d)],
             [],
-            ["Suggested Value", greatestValueCol1, greatestValueCol2, greatestValueCol3, greatestValueCol4, greatestValueCol5],
+            ["Suggested Value", , greatestValueCol1, greatestValueCol2, greatestValueCol3, greatestValueCol4, greatestValueCol5],
             ["Total Air Exhaust", combinedGreatestValue],
             [],
             ["Air Supply Percentage(%)", (parseFloat(percentValue) * 100)],
@@ -267,7 +224,6 @@ const CalculationTable = () => {
 
         return { resutlBz, resutlBa, resutlBb, resutlBc, resutlBd };
     };
-
 
     const calculateCValues = () => {
         const Az = getElementValue("A1z")
@@ -512,7 +468,6 @@ const CalculationTable = () => {
                                         {context === 'menu' ? option.label : option.value}
                                     </div>
                                 )}
-
                             />
                         </td>
                         <td className="border">
