@@ -300,8 +300,6 @@ const CalculationTable = () => {
                             Variable
                         </th>
                         <th className="border px-4">
-                            <div>
-                            </div>
                             <input
                                 type="text"
                                 id="h1"

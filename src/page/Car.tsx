@@ -28,7 +28,7 @@ const Car = () => {
             Click for Information
           </button>
           <button className="text-sm border rounded p-2 bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800" onClick={hanldeNavigate}>
-            Click for Duct Sizer
+            Duct Size Calculation
           </button>
         </div>
       </div>
