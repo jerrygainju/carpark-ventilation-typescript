@@ -19,7 +19,7 @@ const Duct = () => {
     };
 
     return (
-        <div className="flex flex-wrap pt-10 justify-center pb-20 bg-cover" style={{ backgroundImage: 'url("https://img.freepik.com/free-photo/beautiful-view-construction-site-city-during-sunset_181624-9347.jpg?w=996&t=st=1709018835~exp=1709019435~hmac=cbc5adcba33f7641a18280d192837a8616ed372068724541d676ab69df2e18f8")' }}>
+        <div className="flex flex-wrap pt-10 justify-center pb-20 bg-cover" style={{ backgroundImage: 'url("https://wallpaperaccess.com/full/3434504.jpg")' }}>
             <div className='flex flex-col'>
                 <div className='text-center text-3xl font-bold pb-4 font-serif text-gray-300'>
                     Duct Size Calculation
@@ -27,7 +27,7 @@ const Duct = () => {
                 <div className="bg-orange-300 w-[500px] h-[800px] rounded">
                     <div className='flex flex-row gap-10'>
                         <div className=' flex flex-col pt-6 pl-6'>
-                            Units
+                            <b>Units</b>
                             <Select
                                 options={ductOptions}
                                 placeholder="Select Unit"
@@ -49,7 +49,7 @@ const Duct = () => {
                             />
                         </div>
                         <div className='pt-6'>
-                            Material
+                           <b>Material</b>
                             <Select
                                 options={materialOptions}
                                 placeholder="Select Material"
@@ -115,12 +115,12 @@ const Duct = () => {
                                 </label>
                             </div>
                         </div>
-                        <div className='flex flex-row gap-4 pt-4'>
+                        <div className='flex flex-row pt-4'>
                             <div>
                                 {selectedOption === "velocity" && (
                                     <div>
                                         Velocity: <input placeholder='add velocity' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
-                                        {selectedUnit === 'Metric' ? ' M/s' : ' fpm'}
+                                        {selectedUnit === 'Metric' ? ' m/s' : ' fpm'}
                                     </div>
                                 )}
                             </div>
@@ -128,13 +128,31 @@ const Duct = () => {
                                 {selectedOption === "frictionLoss" && (
                                     <div>
                                         Friction Loss: <input placeholder='add friction loss' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-32 h-8 text-center' />
-                                        {selectedUnit === 'Metric' ? ' Pa/30m' : ' in. wg/100'}
+                                        {selectedUnit === 'Metric' ? ' Pa/m' : ' in. wg/100 ft'}
                                     </div>
                                 )}
                             </div>
                         </div>
+                        {/* <div className='pt-2'>
+                            Duct Height: <input placeholder='duct height' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
+                            {selectedUnit === 'Metric' ? ' mm' : ' in. (Height)'}
+                            
+                        </div> */}
                         <hr className="my-4 border-black " />
                     </div>
+                    <div className='flex flex-col pl-6 pr-6'>
+                        <b>Shape of Duct</b>
+                        <div className='pt-2'>
+                            <label className='flex items-center'>
+                                <input 
+                                    type='checkbox'
+                                    className="h-4 w-4"
+                                />
+                                <span className='pl-2'>Round</span>
+                            </label>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
