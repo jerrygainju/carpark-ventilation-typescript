@@ -191,15 +191,20 @@ const DuctForm: React.FC<DuctFormProps> = ({
                         </div>
                         <hr className="my-4 border-black " />
                     </div>
-                    <div className='flex flex-col pl-4 pr-4'>
+                    <div className='flex flex-col pl-6 pr-6'>
                         <b>Duct Size</b>
                         <div className='pt-2'>
                             Width × Height = {" "}
                             <input placeholder='width' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-24 h-8 text-center' />
-                            {selectedUnit === 'Metric' ? ' mm' : ' in'}  × 
+                            {selectedUnit === 'Metric' ? ' mm' : ' in'}  ×  {' '}
                             <input placeholder='height' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-24 h-8 text-center' />
                             {selectedUnit === 'Metric' ? ' mm' : ' in'}  
                         </div>
+                        <hr className="my-4 border-black " />
+                    </div>
+                    <div className='flex flex-col pl-6 pr-6'>
+                         <b>Additional Information</b>
+
                     </div>
                 </div>
             </div>
@@ -208,3 +213,115 @@ const DuctForm: React.FC<DuctFormProps> = ({
 };
 
 export default DuctForm;
+
+// return (
+//     <div className="flex flex-wrap pt-10 justify-center pb-20 bg-cover" style={{ backgroundImage: 'url("https://wallpaperaccess.com/full/3434504.jpg")' }}>
+//       <div className='flex flex-col w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/3 h-full'>
+//         <div className='text-center text-3xl font-bold pb-4 font-serif text-gray-300'>
+//           Duct Size Calculation
+//         </div>
+//         <div className="bg-orange-300 rounded p-4 md:p-6 lg:p-8 h-full">
+//           <div className='flex flex-col md:flex-row gap-4'>
+//             {/* Units */}
+//             <SelectInput
+//               label="Units"
+//               options={ductOptions}
+//               placeholder="Select Unit"
+//               onChange={handleUnitChange}
+//             />
+
+//             {/* Material */}
+//             <SelectInput
+//               label="Material"
+//               options={materialOptions}
+//               placeholder="Select Material"
+//               value={materialOptions.find(option => option.value === inputValue)}
+//               onChange={(selectedOption) => setInputValue(selectedOption ? selectedOption.value : '')}
+//               formatOptionLabel={(option, { context }) => (
+//                 <div>
+//                   {context === 'menu' ? option.label : option.value}
+//                 </div>
+//               )}
+//             />
+//           </div>
+//           <hr className="my-4 border-black" />
+
+//           <div className='flex flex-col md:flex-row gap-4'>
+//             {/* Parameter */}
+//             <TextInput
+//               label="Airflow"
+//               placeholder='flow rate'
+//               unit={selectedUnit === 'Metric' ? 'l/s' : 'cfm'}
+//             />
+
+//             {/* Size By */}
+//             <RadioInput
+//               label="Size By"
+//               options={[
+//                 { value: 'velocity', label: 'Velocity' },
+//                 { value: 'frictionLoss', label: 'Friction Loss' },
+//               ]}
+//               selectedOption={selectedOption}
+//               onChange={handleOptionChange}
+//               additionalInputs={{
+//                 velocity: {
+//                   label: 'Velocity',
+//                   placeholder: 'add velocity',
+//                   unit: selectedUnit === 'Metric' ? 'm/s' : 'fpm',
+//                 },
+//                 frictionLoss: {
+//                   label: 'Friction Loss',
+//                   placeholder: 'add friction loss',
+//                   unit: selectedUnit === 'Metric' ? 'Pa/m' : 'in. wg/100 ft',
+//                 },
+//               }}
+//             />
+//           </div>
+//           <hr className="my-4 border-black" />
+
+//           <div className='flex flex-col md:flex-row gap-4'>
+//             {/* Shape of Duct */}
+//             <RadioInput
+//               label="Shape of Duct"
+//               options={[
+//                 { value: 'round', label: 'Round' },
+//                 { value: 'rect', label: 'Rectangle' },
+//               ]}
+//               selectedOption={selectedShape}
+//               onChange={handleShapeChange}
+//               additionalInputs={{
+//                 round: {
+//                   label: 'Round: Result',
+//                   unit: selectedUnit === 'Metric' ? 'mm' : 'in. (Diameter)',
+//                 },
+//                 rect: {
+//                   label: 'Rectangle: Result',
+//                   unit: selectedUnit === 'Metric' ? 'mm' : 'in',
+//                 },
+//               }}
+//             />
+//           </div>
+
+//           <div className='flex flex-col md:flex-row gap-4'>
+//             {/* Duct Size */}
+//             <div className='flex flex-col md:w-1/2'>
+//               <b>Duct Size</b>
+//               <div className='pt-2'>
+//                 Width × Height = {" "}
+//                 <input placeholder='width' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-24 h-8 text-center' />
+//                 {selectedUnit === 'Metric' ? ' mm' : ' in'}  ×  {' '}
+//                 <input placeholder='height' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-24 h-8 text-center' />
+//                 {selectedUnit === 'Metric' ? ' mm' : ' in'}
+//               </div>
+//               <hr className="my-4 border-black " />
+//             </div>
+
+//             {/* Additional Information */}
+//             <div className='flex flex-col md:w-1/2'>
+//               <b>Additional Information</b>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
