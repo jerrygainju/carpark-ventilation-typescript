@@ -1,5 +1,6 @@
 import Select from 'react-select';
 import { Dispatch, SetStateAction } from 'react';
+import { RadioInput, SelectInput, TextInput } from './extraInputs';
 
 interface DuctFormProps {
     selectedUnit: string;
@@ -31,27 +32,13 @@ const DuctForm: React.FC<DuctFormProps> = ({
                 <div className='text-center text-3xl font-bold pb-4 font-serif text-gray-300'>
                     Duct Size Calculation
                 </div>
-                <div className="bg-orange-300 w-[500px] h-[800px] rounded">
+                <div className="bg-orange-300 w-[500px] h-[875px] rounded">
                     <div className='flex flex-row gap-10'>
                         <div className=' flex flex-col pt-6 pl-6'>
                             <b>Units</b>
-                            <Select
+                            <SelectInput
                                 options={ductOptions}
                                 placeholder="Select Unit"
-                                className='pt-2'
-                                styles={{
-                                    control: (provided) => ({
-                                        ...provided,
-                                        width: '150px',
-                                        backgroundColor: 'rgb(255, 216, 155)',
-                                        borderColor: 'transparent',
-                                    }),
-                                    menu: (provided) => ({
-                                        ...provided,
-                                        width: '150px',
-                                        backgroundColor: "rgb(255, 216, 155)"
-                                    }),
-                                }}
                                 onChange={handleUnitChange}
                             />
                         </div>
@@ -87,64 +74,38 @@ const DuctForm: React.FC<DuctFormProps> = ({
                     <hr className="my-4 border-black " />
                     <div className='flex flex-col pl-6 gap-2 pr-6'>
                         <b> Parameter </b>
-                        <div>
-                            Airflow: <input placeholder='flow rate' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
-                            {selectedUnit === 'Metric' ? ' l/s' : ' cfm'}
-                        </div>
+                        <div className='flex flex-row items-center'>
+                        Airflow
+                        <TextInput
+                            placeholder='flow rate'
+                            unit={selectedUnit === 'Metric' ? ' l/s' : ' cfm'}
+                            />
+                            </div>
                         <hr className="my-4 border-black " />
                     </div>
-                    <div className='flex flex-col pl-6 pr-6'>
-                        <b>Size By </b>
-                        <div className='flex flex-row gap-10 pt-4'>
-                            <div>
-                                <label className="flex items-center">
-                                    <input
-                                        type="radio"
-                                        value="velocity"
-                                        checked={selectedOption === "velocity"}
-                                        onChange={() => handleOptionChange("velocity")}
-                                        className="h-4 w-4"
-                                    />
-                                    <span className="pl-2">Velocity</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label className="flex items-center">
-                                    <input
-                                        type="radio"
-                                        value="frictionLoss"
-                                        checked={selectedOption === "frictionLoss"}
-                                        onChange={() => handleOptionChange("frictionLoss")}
-                                        className="h-4 w-4"
-
-                                    />
-                                    <span className="pl-2">Friction Loss</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div className='flex flex-row pt-4'>
-                            <div>
-                                {selectedOption === "velocity" && (
-                                    <div>
-                                        Velocity: <input placeholder='add velocity' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
-                                        {selectedUnit === 'Metric' ? ' m/s' : ' fpm'}
-                                    </div>
-                                )}
-                            </div>
-                            <div>
-                                {selectedOption === "frictionLoss" && (
-                                    <div>
-                                        Friction Loss: <input placeholder='add friction loss' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-32 h-8 text-center' />
-                                        {selectedUnit === 'Metric' ? ' Pa/m' : ' in. wg/100 ft'}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                        {/* <div className='pt-2'>
-                            Duct Height: <input placeholder='duct height' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
-                            {selectedUnit === 'Metric' ? ' mm' : ' in. (Height)'}
-                            
-                        </div> */}
+                    <div className='pl-6 pr-6'>
+                        {/* Size By */}
+                            <RadioInput
+                            label="Size By"
+                            options={[
+                                { value: 'velocity', label: 'Velocity' },
+                                { value: 'frictionLoss', label: 'Friction Loss' },
+                            ]}
+                            selectedOption={selectedOption}
+                            onChange={handleOptionChange}
+                            additionalInputs={{
+                                velocity: {
+                                    label: 'Velocity',
+                                    placeholder: 'add velocity',
+                                    unit: selectedUnit === ' Metric' ? ' m/s' : ' fpm',
+                                },
+                                frictionLoss: {
+                                    label: 'Friction Loss',
+                                    placeholder: 'add friction loss',
+                                    unit: selectedUnit === 'Metric' ? ' Pa/m' : ' in. wg/100 ft',
+                                },
+                            }}
+                        />
                         <hr className="my-4 border-black " />
                     </div>
                     <div className='flex flex-col pl-6 pr-6'>
@@ -193,20 +154,50 @@ const DuctForm: React.FC<DuctFormProps> = ({
                     </div>
                     <div className='flex flex-col pl-6 pr-6'>
                         <b>Duct Size</b>
-                        <div className='pt-2'>
+                        <div className='flex flex-row items-center'>
+                        Width × Height = {" "}
+                        <TextInput
+                            placeholder='Width'
+                            unit={selectedUnit === 'Metric' ? ' mm' : ' in'}
+                        />
+                        {' '} ×
+                        <TextInput
+                            placeholder='height'
+                            unit={selectedUnit === 'Metric' ? ' mm' : ' in'}
+                        />
+                        </div>
+                        {/* <div className='pt-2'>
                             Width × Height = {" "}
                             <input placeholder='width' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-24 h-8 text-center' />
                             {selectedUnit === 'Metric' ? ' mm' : ' in'}  ×  {' '}
                             <input placeholder='height' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-24 h-8 text-center' />
-                            {selectedUnit === 'Metric' ? ' mm' : ' in'}  
-                        </div>
+                            {selectedUnit === 'Metric' ? ' mm' : ' in'}
+                        </div> */}
                         <hr className="my-4 border-black " />
                     </div>
-                    <div className='flex flex-col pl-6 pr-6'>
-                         <b>Additional Information</b>
-                         {/* <div className='pt-2'>
-                            Equivalent Diameter
-                         </div> */}
+                    <div className='flex flex-col pl-6 pr-6 items-center'>
+                        <b>Additional Information</b>
+                        <div className='pt-2'>
+                            Equivalent Diameter: result
+                         </div>
+                         <div className='pt-2'>
+                            Flow Area: result
+                         </div>
+                         <div className='pt-2'>
+                            Fluid Velocity: result
+                         </div>
+                         <div className='pt-2'>
+                            Reynolds Number: result
+                         </div>
+                         <div className='pt-2'>
+                            Friction Factor: result
+                         </div>
+                         <div className='pt-2'>
+                            Velocuty Pressure: result
+                         </div>
+                         <div className='pt-2'>
+                            Head Loss: result
+                         </div>
                     </div>
                 </div>
             </div>
@@ -216,114 +207,51 @@ const DuctForm: React.FC<DuctFormProps> = ({
 
 export default DuctForm;
 
-// return (
-//     <div className="flex flex-wrap pt-10 justify-center pb-20 bg-cover" style={{ backgroundImage: 'url("https://wallpaperaccess.com/full/3434504.jpg")' }}>
-//       <div className='flex flex-col w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/3 h-full'>
-//         <div className='text-center text-3xl font-bold pb-4 font-serif text-gray-300'>
-//           Duct Size Calculation
-//         </div>
-//         <div className="bg-orange-300 rounded p-4 md:p-6 lg:p-8 h-full">
-//           <div className='flex flex-col md:flex-row gap-4'>
-//             {/* Units */}
-//             <SelectInput
-//               label="Units"
-//               options={ductOptions}
-//               placeholder="Select Unit"
-//               onChange={handleUnitChange}
-//             />
 
-//             {/* Material */}
-//             <SelectInput
-//               label="Material"
-//               options={materialOptions}
-//               placeholder="Select Material"
-//               value={materialOptions.find(option => option.value === inputValue)}
-//               onChange={(selectedOption) => setInputValue(selectedOption ? selectedOption.value : '')}
-//               formatOptionLabel={(option, { context }) => (
-//                 <div>
-//                   {context === 'menu' ? option.label : option.value}
-//                 </div>
-//               )}
-//             />
-//           </div>
-//           <hr className="my-4 border-black" />
 
-//           <div className='flex flex-col md:flex-row gap-4'>
-//             {/* Parameter */}
-//             <TextInput
-//               label="Airflow"
-//               placeholder='flow rate'
-//               unit={selectedUnit === 'Metric' ? 'l/s' : 'cfm'}
-//             />
+ {/* <b>Size By </b>
+                        <div className='flex flex-row gap-10 pt-4'>
+                            <div>
+                                <label className="flex items-center">
+                                    <input
+                                        type="radio"
+                                        value="velocity"
+                                        checked={selectedOption === "velocity"}
+                                        onChange={() => handleOptionChange("velocity")}
+                                        className="h-4 w-4"
+                                    />
+                                    <span className="pl-2">Velocity</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label className="flex items-center">
+                                    <input
+                                        type="radio"
+                                        value="frictionLoss"
+                                        checked={selectedOption === "frictionLoss"}
+                                        onChange={() => handleOptionChange("frictionLoss")}
+                                        className="h-4 w-4"
 
-//             {/* Size By */}
-//             <RadioInput
-//               label="Size By"
-//               options={[
-//                 { value: 'velocity', label: 'Velocity' },
-//                 { value: 'frictionLoss', label: 'Friction Loss' },
-//               ]}
-//               selectedOption={selectedOption}
-//               onChange={handleOptionChange}
-//               additionalInputs={{
-//                 velocity: {
-//                   label: 'Velocity',
-//                   placeholder: 'add velocity',
-//                   unit: selectedUnit === 'Metric' ? 'm/s' : 'fpm',
-//                 },
-//                 frictionLoss: {
-//                   label: 'Friction Loss',
-//                   placeholder: 'add friction loss',
-//                   unit: selectedUnit === 'Metric' ? 'Pa/m' : 'in. wg/100 ft',
-//                 },
-//               }}
-//             />
-//           </div>
-//           <hr className="my-4 border-black" />
-
-//           <div className='flex flex-col md:flex-row gap-4'>
-//             {/* Shape of Duct */}
-//             <RadioInput
-//               label="Shape of Duct"
-//               options={[
-//                 { value: 'round', label: 'Round' },
-//                 { value: 'rect', label: 'Rectangle' },
-//               ]}
-//               selectedOption={selectedShape}
-//               onChange={handleShapeChange}
-//               additionalInputs={{
-//                 round: {
-//                   label: 'Round: Result',
-//                   unit: selectedUnit === 'Metric' ? 'mm' : 'in. (Diameter)',
-//                 },
-//                 rect: {
-//                   label: 'Rectangle: Result',
-//                   unit: selectedUnit === 'Metric' ? 'mm' : 'in',
-//                 },
-//               }}
-//             />
-//           </div>
-
-//           <div className='flex flex-col md:flex-row gap-4'>
-//             {/* Duct Size */}
-//             <div className='flex flex-col md:w-1/2'>
-//               <b>Duct Size</b>
-//               <div className='pt-2'>
-//                 Width × Height = {" "}
-//                 <input placeholder='width' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-24 h-8 text-center' />
-//                 {selectedUnit === 'Metric' ? ' mm' : ' in'}  ×  {' '}
-//                 <input placeholder='height' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-24 h-8 text-center' />
-//                 {selectedUnit === 'Metric' ? ' mm' : ' in'}
-//               </div>
-//               <hr className="my-4 border-black " />
-//             </div>
-
-//             {/* Additional Information */}
-//             <div className='flex flex-col md:w-1/2'>
-//               <b>Additional Information</b>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
+                                    />
+                                    <span className="pl-2">Friction Loss</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div className='flex flex-row pt-4'>
+                            <div>
+                                {selectedOption === "velocity" && (
+                                    <div>
+                                        Velocity: <input placeholder='add velocity' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
+                                        {selectedUnit === 'Metric' ? ' m/s' : ' fpm'}
+                                    </div>
+                                )}
+                            </div>
+                            <div>
+                                {selectedOption === "frictionLoss" && (
+                                    <div>
+                                        Friction Loss: <input placeholder='add friction loss' style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-32 h-8 text-center' />
+                                        {selectedUnit === 'Metric' ? ' Pa/m' : ' in. wg/100 ft'}
+                                    </div>
+                                )}
+                            </div>
+                        </div> */}

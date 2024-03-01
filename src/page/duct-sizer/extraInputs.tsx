@@ -2,16 +2,14 @@ import React from 'react';
 import Select from 'react-select';
 
 interface SelectInputProps {
-  label: string;
   options: any[];
   placeholder: string;
   onChange: (selectedOption: any) => void;
 }
 
-export const SelectInput: React.FC<SelectInputProps> = ({ label, options, placeholder, onChange }) => {
+export const SelectInput: React.FC<SelectInputProps> = ({ options, placeholder, onChange }) => {
   return (
-    <div className='flex flex-col md:w-1/2'>
-      <b>{label}</b>
+    <div>
       <Select
         options={options}
         placeholder={placeholder}
@@ -19,13 +17,13 @@ export const SelectInput: React.FC<SelectInputProps> = ({ label, options, placeh
         styles={{
           control: (provided) => ({
             ...provided,
-            width: '100%',
+            width: '165px',
             backgroundColor: 'rgb(255, 216, 155)',
             borderColor: 'transparent',
           }),
           menu: (provided) => ({
             ...provided,
-            width: '100%',
+            width: '165px',
             backgroundColor: "rgb(255, 216, 155)"
           }),
         }}
@@ -45,9 +43,9 @@ interface RadioInputProps {
 
 export const RadioInput: React.FC<RadioInputProps> = ({ label, options, selectedOption, onChange, additionalInputs }) => {
   return (
-    <div className='flex flex-col md:w-1/2'>
+    <div className='flex flex-col'>
       <b>{label}</b>
-      <div className='flex flex-row gap-4'>
+      <div className='flex flex-row gap-4 pt-4'>
         {options.map((option) => (
           <label key={option.value} className='flex items-center'>
             <input
@@ -61,7 +59,7 @@ export const RadioInput: React.FC<RadioInputProps> = ({ label, options, selected
           </label>
         ))}
       </div>
-      <div className='flex flex-row gap-4'>
+      <div className='flex flex-row gap-4 pt-4'>
         {Object.entries(additionalInputs).map(([key, input]) => (
           selectedOption === key && (
             <div key={key}>
@@ -76,20 +74,16 @@ export const RadioInput: React.FC<RadioInputProps> = ({ label, options, selected
 };
 
 interface TextInputProps {
-    label: string;
+ 
     placeholder: string;
     unit: string;
   }
   
-  export const TextInput: React.FC<TextInputProps> = ({ label, placeholder, unit }) => {
+  export const TextInput: React.FC<TextInputProps> = ({ placeholder, unit }) => {
     return (
-      <div className='flex flex-col md:w-1/2'>
-        <b>{label}</b>
-        <div>
+        <div className='pl-2'>
           <input placeholder={placeholder} style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
           {unit}
-        </div>
-        <hr className="my-4 border-black " />
       </div>
     );
   };
