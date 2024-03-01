@@ -34,6 +34,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({ options, placeholder, 
 };
 
 interface RadioInputProps {
+  type: string;
   label: string;
   options: any[];
   selectedOption: string;
@@ -41,7 +42,7 @@ interface RadioInputProps {
   additionalInputs: Record<string, { label: string, placeholder: string, unit: string }>;
 }
 
-export const RadioInput: React.FC<RadioInputProps> = ({ label, options, selectedOption, onChange, additionalInputs }) => {
+export const RadioInput: React.FC<RadioInputProps> = ({ type, label, options, selectedOption, onChange, additionalInputs }) => {
   return (
     <div className='flex flex-col'>
       <b>{label}</b>
@@ -63,7 +64,7 @@ export const RadioInput: React.FC<RadioInputProps> = ({ label, options, selected
         {Object.entries(additionalInputs).map(([key, input]) => (
           selectedOption === key && (
             <div key={key}>
-              {input.label}: <input placeholder={input.placeholder} style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-full md:w-36 h-8 text-center' />
+              {input.label} <input placeholder={input.placeholder} type={type} style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-full md:w-36 h-8 text-center' />
               {input.unit}
             </div>
           )
@@ -76,13 +77,14 @@ export const RadioInput: React.FC<RadioInputProps> = ({ label, options, selected
 interface TextInputProps {
  
     placeholder: string;
+    type: string;
     unit: string;
   }
   
-  export const TextInput: React.FC<TextInputProps> = ({ placeholder, unit }) => {
+  export const TextInput: React.FC<TextInputProps> = ({type, placeholder, unit }) => {
     return (
         <div className='pl-2'>
-          <input placeholder={placeholder} style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
+          <input placeholder={placeholder} type ={type} style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
           {unit}
       </div>
     );
