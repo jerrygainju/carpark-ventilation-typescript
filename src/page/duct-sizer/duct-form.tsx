@@ -204,7 +204,9 @@ const DuctForm: React.FC<DuctFormProps> = ({
                     </div>
                     <div className='flex flex-col pl-6 pr-6'>
                          <b>Additional Information</b>
-
+                         {/* <div className='pt-2'>
+                            Equivalent Diameter
+                         </div> */}
                     </div>
                 </div>
             </div>
