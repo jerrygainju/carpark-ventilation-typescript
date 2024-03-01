@@ -304,7 +304,7 @@ const CalculationTable = () => {
                     type='text'
                     id='pr1'
                     placeholder='Enter project name'
-                    className="border rounded h-10 text-center border-gray-400"
+                    className="border rounded h-10 text-center border-gray-400 w-72"
                 />
             </div>
             <div className="content-center">
