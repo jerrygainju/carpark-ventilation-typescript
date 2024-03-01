@@ -27,14 +27,14 @@ const DuctForm: React.FC<DuctFormProps> = ({
     handleUnitChange,
 }) => {
     return (
-        <div className="flex flex-wrap pt-10 justify-center pb-20 bg-cover" style={{ backgroundImage: 'url("https://wallpaperaccess.com/full/3434504.jpg")' }}>
-            <div className='flex flex-col'>
-                <div className='text-center text-3xl font-bold pb-4 font-serif text-gray-300'>
+        <div className="flex flex-wrap pt-20 justify-center pb-36 bg-cover" style={{ backgroundImage: 'url("https://wallpaperaccess.com/full/3434504.jpg")' }}>
+            <div className='flex flex-col w-auto lg:w-[50%] sm:w-[90%] items-center'>
+                <div className='text-3xl font-bold pb-4 font-serif text-gray-300'>
                     Duct Size Calculation
                 </div>
-                <div className="bg-orange-300 w-[500px] h-[875px] rounded">
-                    <div className='flex flex-row gap-10'>
-                        <div className=' flex flex-col pt-6 pl-6'>
+                <div className="bg-orange-300 w-full lg:w-[70%] lg:h-[870px] rounded">
+                    <div className='flex flex-row flex-wrap gap-4 pt-4 pl-6'>
+                        <div className='w-full sm:w-1/2 lg:w-1/3 '>
                             <b>Units</b>
                             <SelectInput
                                 options={ductOptions}
@@ -42,7 +42,7 @@ const DuctForm: React.FC<DuctFormProps> = ({
                                 onChange={handleUnitChange}
                             />
                         </div>
-                        <div className='pt-6'>
+                        <div>
                             <b>Material</b>
                             <Select
                                 options={materialOptions}
@@ -78,6 +78,7 @@ const DuctForm: React.FC<DuctFormProps> = ({
                         Airflow
                         <TextInput
                             placeholder='flow rate'
+                            type='number'
                             unit={selectedUnit === 'Metric' ? ' l/s' : ' cfm'}
                             />
                             </div>
@@ -86,6 +87,7 @@ const DuctForm: React.FC<DuctFormProps> = ({
                     <div className='pl-6 pr-6'>
                         {/* Size By */}
                             <RadioInput
+                            type='number'
                             label="Size By"
                             options={[
                                 { value: 'velocity', label: 'Velocity' },
@@ -136,7 +138,7 @@ const DuctForm: React.FC<DuctFormProps> = ({
                             <div>
                                 {selectedShape === "round" && (
                                     <div>
-                                        Round: Result
+                                        Round: result
                                         {selectedUnit === 'Metric' ? ' mm' : ' in. (Diameter)'}:
                                     </div>
                                 )}
@@ -144,7 +146,7 @@ const DuctForm: React.FC<DuctFormProps> = ({
                             <div>
                                 {selectedShape === "rect" && (
                                     <div>
-                                        Rectangle: Result
+                                        Rectangle: result
                                         {selectedUnit === 'Metric' ? ' mm' : ' in'}
                                     </div>
                                 )}
@@ -154,14 +156,16 @@ const DuctForm: React.FC<DuctFormProps> = ({
                     </div>
                     <div className='flex flex-col pl-6 pr-6'>
                         <b>Duct Size</b>
-                        <div className='flex flex-row items-center'>
+                        <div className='flex flex-col sm:flex-row items-center'>
                         Width × Height = {" "}
                         <TextInput
+                        type='number'
                             placeholder='Width'
                             unit={selectedUnit === 'Metric' ? ' mm' : ' in'}
                         />
-                        {' '} ×
+                         <span className='pl-2'> × </span>
                         <TextInput
+                        type='number'
                             placeholder='height'
                             unit={selectedUnit === 'Metric' ? ' mm' : ' in'}
                         />
@@ -179,24 +183,32 @@ const DuctForm: React.FC<DuctFormProps> = ({
                         <b>Additional Information</b>
                         <div className='pt-2'>
                             Equivalent Diameter: result
+                            {selectedUnit === 'Metric'? ' mm': ' in'}
                          </div>
                          <div className='pt-2'>
                             Flow Area: result
+                            {selectedUnit === 'Metric'? ' mm': ' ft'}
+                            {selectedUnit === 'Metric' && <sup>2</sup>}
+                            {selectedUnit !== 'Metric' && <sup>2</sup>}
                          </div>
                          <div className='pt-2'>
                             Fluid Velocity: result
+                            {selectedUnit === 'Metric'? ' m/s': ' ft/min'}
                          </div>
                          <div className='pt-2'>
                             Reynolds Number: result
+                            
                          </div>
                          <div className='pt-2'>
                             Friction Factor: result
                          </div>
                          <div className='pt-2'>
                             Velocuty Pressure: result
+                            {selectedUnit === 'Metric'? ' Pa': ' in.WC'}
                          </div>
                          <div className='pt-2'>
                             Head Loss: result
+                            {selectedUnit === 'Metric'? ' Pa/m': ' in.WC/100ft'}
                          </div>
                     </div>
                 </div>
