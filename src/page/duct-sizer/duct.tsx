@@ -43,7 +43,7 @@ const Duct = () => {
       const qi = (getElementValue('airflow') * 2118.8800) / 1000;
       const vi = getElementValue('velocity') * 196.8504;
       console.log('imperial');
-      const Di = Math.sqrt((4 * qi) / (Math.PI * vi)) * 12; // converting inches to millimeters
+      const Di = Math.sqrt((4 * qi) / (Math.PI * vi)) * 12; 
       const parseDi = Number(Di.toFixed(3))
       console.log(qi, 'airflow');
       console.log(vi, 'velocity');
