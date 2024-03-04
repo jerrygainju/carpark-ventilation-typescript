@@ -18,13 +18,13 @@ export const SelectInput: React.FC<SelectInputProps> = ({ options, placeholder, 
           control: (provided) => ({
             ...provided,
             width: '165px',
-            backgroundColor: 'rgb(255, 216, 155)',
+            backgroundColor: 'rgba(231,229,225,255)',
             borderColor: 'transparent',
           }),
           menu: (provided) => ({
             ...provided,
             width: '165px',
-            backgroundColor: "rgb(255, 216, 155)"
+            backgroundColor: "rgba(231,229,225,255)"
           }),
         }}
         onChange={onChange}
@@ -39,7 +39,7 @@ interface RadioInputProps {
   options: any[];
   selectedOption: string;
   onChange: (option: string) => void;
-  additionalInputs: Record<string, { label: string, placeholder: string, unit: string }>;
+  additionalInputs: Record<string, { label: string, id:string, placeholder: string, unit: string }>;
 }
 
 export const RadioInput: React.FC<RadioInputProps> = ({ type, label, options, selectedOption, onChange, additionalInputs }) => {
@@ -64,7 +64,7 @@ export const RadioInput: React.FC<RadioInputProps> = ({ type, label, options, se
         {Object.entries(additionalInputs).map(([key, input]) => (
           selectedOption === key && (
             <div key={key}>
-              {input.label} <input placeholder={input.placeholder} type={type} style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-full md:w-36 h-8 text-center' />
+              {input.label} <input placeholder={input.placeholder} id={input.id} type={type} style={{ backgroundColor: 'rgba(231,229,225,255)' }} className='rounded w-full md:w-36 h-8 text-center' />
               {input.unit}
             </div>
           )
@@ -78,13 +78,14 @@ interface TextInputProps {
  
     placeholder: string;
     type: string;
+    id: string;
     unit: string;
   }
   
-  export const TextInput: React.FC<TextInputProps> = ({type, placeholder, unit }) => {
+  export const TextInput: React.FC<TextInputProps> = ({type, id, placeholder, unit }) => {
     return (
         <div className='pl-2'>
-          <input placeholder={placeholder} type ={type} style={{ backgroundColor: 'rgb(255, 216, 155)' }} className='rounded w-28 h-8 text-center' />
+          <input placeholder={placeholder} id={id} type ={type} style={{ backgroundColor: 'rgba(231,229,225,255)' }} className='rounded w-28 h-8 text-center' />
           {unit}
       </div>
     );
