@@ -39,7 +39,7 @@ interface RadioInputProps {
   options: any[];
   selectedOption: string;
   onChange: (option: string) => void;
-  additionalInputs: Record<string, { label: string, id:string, placeholder: string, unit: string }>;
+  additionalInputs: Record<string, { label: string, id: string, placeholder: string, unit: string, onChange?: (value: string) => void }>;
 }
 
 export const RadioInput: React.FC<RadioInputProps> = ({ type, label, options, selectedOption, onChange, additionalInputs }) => {
@@ -64,7 +64,18 @@ export const RadioInput: React.FC<RadioInputProps> = ({ type, label, options, se
         {Object.entries(additionalInputs).map(([key, input]) => (
           selectedOption === key && (
             <div key={key}>
-              {input.label} <input placeholder={input.placeholder} id={input.id} type={type} style={{ backgroundColor: 'rgba(231,229,225,255)' }} className='rounded w-full md:w-36 h-8 text-center' />
+              {input.label} <input
+                placeholder={input.placeholder}
+                id={input.id}
+                onChange={(e) => {
+                  if (input.onChange) {
+                    input.onChange(e.target.value);
+                  }
+                }}
+                type={type}
+                style={{ backgroundColor: 'rgba(231,229,225,255)' }}
+                className='rounded w-full md:w-32 h-8 text-center'
+              />
               {input.unit}
             </div>
           )
@@ -74,20 +85,35 @@ export const RadioInput: React.FC<RadioInputProps> = ({ type, label, options, se
   );
 };
 
+
 interface TextInputProps {
- 
-    placeholder: string;
-    type: string;
-    id: string;
-    unit: string;
-  }
-  
-  export const TextInput: React.FC<TextInputProps> = ({type, id, placeholder, unit }) => {
-    return (
-        <div className='pl-2'>
-          <input placeholder={placeholder} id={id} type ={type} style={{ backgroundColor: 'rgba(231,229,225,255)' }} className='rounded w-28 h-8 text-center' />
-          {unit}
-      </div>
-    );
+  placeholder: string;
+  type: string;
+  id: string;
+  unit: string;
+  onChange?: (value: string) => void;
+}
+
+export const TextInput: React.FC<TextInputProps> = ({ type, id, placeholder, unit, onChange }) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (onChange) {
+      onChange(value);
+    }
   };
+
+  return (
+    <div className='pl-2'>
+      <input
+        placeholder={placeholder}
+        id={id}
+        type={type}
+        style={{ backgroundColor: 'rgba(231,229,225,255)' }}
+        className='rounded w-28 h-8 text-center'
+        onChange={handleChange}
+      />
+      {unit}
+    </div>
+  );
+};
 

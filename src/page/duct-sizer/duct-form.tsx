@@ -14,7 +14,8 @@ interface DuctFormProps {
     materialOptions: any[];
     handleUnitChange: (selectedOption: any) => void;
     equivalentDiameter: number | null;
-    eqDiameterCal: () => void
+    handleAirFlowChange: (value: string) => void;
+    handleVelocityChange: (value: string) => void;
 }
 const DuctForm: React.FC<DuctFormProps> = ({
     selectedUnit,
@@ -28,7 +29,8 @@ const DuctForm: React.FC<DuctFormProps> = ({
     materialOptions,
     handleUnitChange,
     equivalentDiameter,
-    eqDiameterCal
+    handleAirFlowChange,
+    handleVelocityChange
 }) => {
     return (
         <div className="flex flex-wrap pt-20 justify-center pb-36 bg-cover bg-slate-300" >
@@ -82,6 +84,7 @@ const DuctForm: React.FC<DuctFormProps> = ({
                             Airflow
                             <TextInput
                                 placeholder='flow rate'
+                                onChange={handleAirFlowChange}
                                 id='airflow'
                                 type='number'
                                 unit={selectedUnit === 'Metric' ? ' l/s' : ' cfm'}
@@ -104,7 +107,8 @@ const DuctForm: React.FC<DuctFormProps> = ({
                                 velocity: {
                                     label: 'Velocity',
                                     id: 'velocity',
-                                    placeholder: 'add velocity',
+                                    onChange: handleVelocityChange,
+                                    placeholder: 'add velocity', 
                                     unit: selectedUnit === 'Metric' ? ' m/s' : ' fpm',
                                 },
                                 frictionLoss: {
@@ -119,10 +123,10 @@ const DuctForm: React.FC<DuctFormProps> = ({
                     </div>
                     <div className='pl-6 pr-6'>
                         <b>Equivalent Diameter: </b>
-                        {equivalentDiameter !== null
+                       <b> {equivalentDiameter !== null
                             ? `${equivalentDiameter} ${selectedUnit === 'Metric' ? 'mm' : 'in'}`
-                            : 'result'} {' '}
-                        <button onClick={() => { eqDiameterCal(); }} className="px-2 pb-1 bg-gray-600 text-white rounded hover:bg-gray-500 focus:outline-none focus:shadow-outline-blue">Calculate</button>
+                            : 'result'} {' '} </b>.
+                        {/* <button onClick={() => { eqDiameterCal(); }} className="px-2  bg-gray-600 text-white rounded hover:bg-gray-500 focus:outline-none focus:shadow-outline-blue">Calculate</button> */}
                         <hr className="my-4 border-black " />
                     </div>
                     <div className='flex flex-col pl-6 pr-6'>
